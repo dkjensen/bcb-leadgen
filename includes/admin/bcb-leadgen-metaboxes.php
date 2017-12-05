@@ -23,10 +23,29 @@ function bcb_leadgen_metaboxes() {
     ) );
 
     $leadpage->add_field( array(
+        'name'       => esc_html__( 'Primary Color', 'bcb_leadgen' ),
+        'desc'       => esc_html__( 'Background color to display behind title and main image section', 'bcb_leadgen' ),
+        'id'         => $prefix . 'color_primary',
+        'type'       => 'colorpicker',
+        'default'    => '#0f73c3',
+    ) );
+
+    $leadpage->add_field( array(
+        'name'       => esc_html__( 'Secondary Color', 'bcb_leadgen' ),
+        'desc'       => esc_html__( 'Background color to display the header and footer bars', 'bcb_leadgen' ),
+        'id'         => $prefix . 'color_secondary',
+        'type'       => 'colorpicker',
+        'default'    => '#222222',
+    ) );
+
+    /*
+    $leadpage->add_field( array(
         'name' => esc_html__( 'Form ID', 'bcb_leadgen' ),
         'desc' => esc_html__( 'Gravity Form ID', 'bcb_leadgen' ),
         'id'   => $prefix . 'form_id',
-        'type' => 'text_small',
+        'type' => 'hidden',
     ) );
+    */
+
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );
