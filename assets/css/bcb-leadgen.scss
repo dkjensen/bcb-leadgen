@@ -1,0 +1,176 @@
+@import "../../node_modules/bootstrap-sass-grid/sass/bootstrap-sass-grid";
+
+html {
+    font-size: 16px;
+    font-size: 1rem;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+[class^="col"] {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.leadpage-wrapper {
+
+    .leadpage-head,
+    .leadpage-foot {
+        color: #ffffff;
+        background: #222222;
+        padding: 1em 0;
+    }
+
+    .leadpage-logo {
+        height: 60px;
+        display: flex;
+        align-items: center;
+
+        img {
+            display: block;
+            max-height: 100%;
+            max-width: calc( 100% - 25vw );
+        }
+    }
+
+    .leadpage-masthead {
+        color: #ffffff;
+        background: #0f73c3;
+        padding: 2em;
+        position: relative;
+        overflow: hidden;
+
+        @media screen and (min-width: 768px) {
+            padding: 3em;
+        }
+
+        h1 {
+            font-size: 7vw;
+            font-weight: bold;
+            margin: 0 0 1em;
+            text-align: center;
+            flex: 1;
+
+            @media screen and (min-width: 768px) {
+                font-size: 3.5em;
+                margin: 0;
+                text-align: left;
+            }
+        }
+
+        img {
+            margin: 0 0 -3em;
+            display: block;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: column;
+
+            [class^="col"] {
+                display: flex;
+                align-items: center;
+            }
+
+            @media screen and (min-width: 768px) {
+                flex-direction: row;
+            }
+        }
+    }
+
+    .leadpage-content {
+        margin: 1.5em 0;
+
+        .gform_wrapper {
+
+            ul {
+                display: block;
+                list-style: none;
+                margin: 0 -15px;
+                padding: 0;
+            }
+
+            ul li.gfield {
+                clear: none;
+                margin: 0;
+                padding: 0 15px 10px;
+                float: left;
+
+                @media screen and (max-width: 767px) {
+                    width: 100%;
+                }
+
+                &.gform_validation_container {
+                    display: none !important;
+                }
+
+                input,
+                select,
+                textarea {
+                    width: 100%;
+                }
+
+                .gfield_required {
+                    display: none;
+                }
+
+                .gfield_description {
+                    font-size: .875em;
+                    margin: .5em 0;
+                
+                    &.validation_message {
+                        color: #DD5353;
+                    }
+
+                }
+                
+            }
+
+            .validation_error {
+                color: #DD5353;
+                background: rgba(221, 83, 83, 0.15);
+                padding: .5em 1em;
+                margin: 0 0 1em;
+            }
+
+            .gform_footer {
+                text-align: center;
+
+                input[type="submit"],
+                input[type="reset"],
+                input[type="button"],
+                button {
+                    display: inline-block;
+                    color: #ffffff;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    text-shadow: 0 1px 1px #05a0e2;
+                    background: #00b6f1;
+                    background: -webkit-linear-gradient(left top, #00b6f1, #3fd0ff);
+                    background: -o-linear-gradient(bottom right, #00b6f1, #3fd0ff);
+                    background: -moz-linear-gradient(bottom right, #00b6f1, #3fd0ff);
+                    background: linear-gradient(to bottom right, #00b6f1, #3fd0ff);
+                    border: 1px solid #00b6f1;
+                    border-radius: 5px;
+                    padding-left: 3em;
+                    padding-right: 3em;
+                    max-width: 100%;
+                    
+                    &:hover {
+                        background-color: #52cdf6;
+                        background-image: -moz-linear-gradient(top, #05a0e2 0%, #52cdf6 91%);
+                        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#05a0e2), color-stop(91%,#52cdf6));
+                        background-image: -webkit-linear-gradient(top, #05a0e2 0%,#52cdf6 100%);
+                        background-image: -o-linear-gradient(top, #05a0e2 0%,#52cdf6 91%);
+                        background-image: -ms-linear-gradient(top, #05a0e2 0%,#52cdf6 91%);
+                        background-image: linear-gradient(to bottom, #05a0e2 0%,#52cdf6 91%);
+                        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05a0e2', endColorstr='#52cdf6',GradientType=0 );
+                    }
+                }
+            }
+        }
+    }
+}
