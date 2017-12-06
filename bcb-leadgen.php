@@ -24,6 +24,9 @@ if( is_admin() ) {
     require_once 'includes/admin/bcb-leadgen-metaboxes.php';
 }
 
+// Enable GF label visibility settings
+add_filter( 'gform_enable_field_label_visibility_settings', '__return_true' );
+
 register_activation_hook( __FILE__, function() {
     bcb_leadgen_post_types();
 

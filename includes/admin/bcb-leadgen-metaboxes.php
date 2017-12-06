@@ -5,13 +5,13 @@ if( ! defined( 'ABSPATH' ) )
 
 
 function bcb_leadgen_admin_menu() {
-    add_menu_page( __( 'Leads System', 'bcb-leadgen' ), __( 'Leads System', 'bcb-leadgen' ), 'edit_pages', 'bcb-leadsys', 'bcb_leadgen_leads_system_callback', 'dashicons-chart-line', 25 );
+    add_menu_page( __( 'Lead Manager', 'bcb-leadgen' ), __( 'Lead Manager', 'bcb-leadgen' ), 'edit_pages', 'bcb-leadsys', 'bcb_leadgen_leads_manager_callback', 'dashicons-chart-line', 25 );
     //add_submenu_page( 'bcb-leadsys', __( 'Lead Categories', 'bcb-leadgen' ), __( 'Lead Categories', 'bcb-leadgen' ), 'manage_options', 'edit-tags.php?taxonomy=lead_cat&post_type=leadpage', null );
 }
 add_action( 'admin_menu', 'bcb_leadgen_admin_menu', 5 );
 
 
-function bcb_leadgen_leads_system_callback() {
+function bcb_leadgen_leads_manager_callback() {
     $lead_categories = get_terms( array(
         'taxonomy'      => 'lead_cat',
         'hide_empty'    => false,
@@ -152,11 +152,7 @@ function bcb_leadgen_leads_system_callback() {
 
                                     <form method="post" action="">
                                         <?php wp_nonce_field( 'rg_start_export', 'rg_start_export_nonce' ); ?>
-                                        <?php array_walk( $fields, function( $value, $key ) { printf( '<input type="hidden" name="export_field[]" value="%d" />', (int) $key ); } ); ?>
-                                        <input type="hidden" name="export_field[]" value="date_created" />
-                                        <input type="hidden" name="export_field[]" value="source_url" />
-                                        <input type="hidden" name="export_field[]" value="ip" />
-                                        <input type="hidden" name="export_field[]" value="user_agent" />
+                                        <?php array_walk( $fields, function( $value, $key ) { printf( '<input type="hidden" name="export_field[]" value="%d" />', (int) $value ); } ); ?>
                                         <input type="hidden" name="export_form" value="<?php print $form_id; ?>" />
                                         <button type="submit" name="export_lead" class="button button-primary" style="float: right;"><span class="dashicons dashicons-download" style="vertical-align: middle;"></span></button>
                                         <span class="spinner"></span>
