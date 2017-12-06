@@ -6,7 +6,7 @@ if( ! defined( 'ABSPATH' ) )
 
 function bcb_leadgen_admin_menu() {
     add_menu_page( __( 'Leads System', 'bcb-leadgen' ), __( 'Leads System', 'bcb-leadgen' ), 'edit_pages', 'bcb-leadsys', 'bcb_leadgen_leads_system_callback', 'dashicons-chart-line', 25 );
-    add_submenu_page( 'bcb-leadsys', __( 'Lead Categories', 'bcb-leadgen' ), __( 'Lead Categories', 'bcb-leadgen' ), 'manage_options', 'edit-tags.php?taxonomy=lead_cat&post_type=leadpage', null );
+    //add_submenu_page( 'bcb-leadsys', __( 'Lead Categories', 'bcb-leadgen' ), __( 'Lead Categories', 'bcb-leadgen' ), 'manage_options', 'edit-tags.php?taxonomy=lead_cat&post_type=leadpage', null );
 }
 add_action( 'admin_menu', 'bcb_leadgen_admin_menu', 5 );
 
@@ -41,7 +41,7 @@ function bcb_leadgen_leads_system_callback() {
     </style>
 
     <div class="wrap">
-        <h1><?php _e( 'Leads System', 'bcb-leadgen' ); ?></h1>
+        <h1><?php _e( 'Broadcast Beat Lead Manager: Campaigns', 'bcb-leadgen' ); ?></h1>
 
         <div class="lead-cat-wrapper">
         
@@ -117,7 +117,7 @@ function bcb_leadgen_leads_system_callback() {
 
             <div class="lead-cat postbox">
                 <div class="inside">
-                    <h3><?php print __( 'Lead Campaign:', 'bcb-leadgen' ) . ' ' . $category->name; ?></h3>
+                    <h3><?php print $category->name; ?></h3>
                     <?php if( ! empty( $leadpages ) ) : ?>
                     <table class="widefat striped">
                         <thead>
