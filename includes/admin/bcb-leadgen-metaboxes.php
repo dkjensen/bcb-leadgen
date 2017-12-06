@@ -42,6 +42,8 @@ function bcb_leadgen_leads_manager_callback() {
 
     <div class="wrap">
         <h1><?php _e( 'Broadcast Beat Lead Manager: Campaigns', 'bcb-leadgen' ); ?></h1>
+        
+        <p><a href="<?php print admin_url( 'post-new.php?post_type=leadpage' ); ?>" class="page-title-action"><?php _e( 'Add New Lead Page', 'bcb-leadgen' ); ?></a></p>
 
         <div class="lead-cat-wrapper">
         
