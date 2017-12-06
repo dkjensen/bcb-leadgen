@@ -58,7 +58,7 @@ function bcb_leadgen_post_types() {
             'with_front'        => false,
         ),
         'menu_icon'          => 'dashicons-chart-line',
-		'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' )
+		'supports'           => array( 'title', 'editor', 'author' )
     ) );
 }
 add_action( 'init', 'bcb_leadgen_post_types' );

@@ -6,7 +6,6 @@ if( ! defined( 'ABSPATH' ) )
 
 function bcb_leadgen_admin_menu() {
     add_menu_page( __( 'Lead Manager', 'bcb-leadgen' ), __( 'Lead Manager', 'bcb-leadgen' ), 'edit_pages', 'bcb-leadsys', 'bcb_leadgen_leads_manager_callback', 'dashicons-chart-line', 25 );
-    //add_submenu_page( 'bcb-leadsys', __( 'Lead Categories', 'bcb-leadgen' ), __( 'Lead Categories', 'bcb-leadgen' ), 'manage_options', 'edit-tags.php?taxonomy=lead_cat&post_type=leadpage', null );
 }
 add_action( 'admin_menu', 'bcb_leadgen_admin_menu', 5 );
 
@@ -19,30 +18,8 @@ function bcb_leadgen_leads_manager_callback() {
 
     ?>
 
-    <style>
-        .lead-cat-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-        .lead-cat-wrapper .lead-cat {
-            flex: 0 0 auto;
-            width: 49%;
-            width: calc( 50% - 10px );
-        }
-
-        @media screen and (max-width: 782px) {
-            .lead-cat-wrapper .lead-cat {
-                flex: 1 1 100%;
-                width: 100%;
-            }
-        }
-    </style>
-
     <div class="wrap">
         <h1><?php _e( 'Broadcast Beat Lead Manager: Campaigns', 'bcb-leadgen' ); ?></h1>
-        
         <p><a href="<?php print admin_url( 'post-new.php?post_type=leadpage' ); ?>" class="page-title-action"><?php _e( 'Add New Lead Page', 'bcb-leadgen' ); ?></a></p>
 
         <div class="lead-cat-wrapper">
@@ -119,7 +96,7 @@ function bcb_leadgen_leads_manager_callback() {
 
             <div class="lead-cat postbox">
                 <div class="inside">
-                    <h3><?php print $category->name; ?></h3>
+                    <h3 style="text-transform: uppercase;"><?php print $category->name; ?></h3>
                     <?php if( ! empty( $leadpages ) ) : ?>
                     <table class="widefat striped">
                         <thead>
@@ -206,17 +183,32 @@ function bcb_leadgen_metaboxes() {
 
     $prefix = 'leadpage_';
 
-    $leadpage = new_cmb2_box( array(
-        'id'            => $prefix . 'options',
-        'title'         => esc_html__( 'Lead Page Options', 'bcb_leadgen' ),
+    $imagery = new_cmb2_box( array(
+        'id'            => $prefix . 'imagery',
+        'title'         => esc_html__( 'Logo & Imagery', 'bcb_leadgen' ),
         'object_types'  => array( 'leadpage' ),
     ) );
 
-    $leadpage->add_field( array(
+    $imagery->add_field( array(
         'name'       => esc_html__( 'Logo Image', 'bcb_leadgen' ),
         'desc'       => esc_html__( 'Logo to display at top of lead page', 'bcb_leadgen' ),
         'id'         => $prefix . 'logo',
         'type'       => 'file',
+    ) );
+
+    $imagery->add_field( array(
+        'name'       => esc_html__( 'Banner Image', 'bcb_leadgen' ),
+        'desc'       => esc_html__( 'Image to display in the banner section next to the title', 'bcb_leadgen' ),
+        'id'         => $prefix . 'banner',
+        'type'       => 'file',
+    ) );
+
+    $leadpage = new_cmb2_box( array(
+        'id'            => $prefix . 'options',
+        'title'         => esc_html__( 'Design & Color Scheme', 'bcb_leadgen' ),
+        'object_types'  => array( 'leadpage' ),
+        'context'       => 'after_title',
+        'priority'      => 'high',
     ) );
 
     $leadpage->add_field( array(
@@ -225,6 +217,7 @@ function bcb_leadgen_metaboxes() {
         'id'         => $prefix . 'color_primary',
         'type'       => 'colorpicker',
         'default'    => '#0f73c3',
+        'classes'    => 'col-6',
     ) );
 
     $leadpage->add_field( array(
@@ -233,8 +226,10 @@ function bcb_leadgen_metaboxes() {
         'id'         => $prefix . 'color_secondary',
         'type'       => 'colorpicker',
         'default'    => '#222222',
+        'classes'    => 'col-6',
     ) );
 
+    /*
     $leadform = new_cmb2_box( array(
         'id'            => $prefix . 'leadform',
         'title'         => esc_html__( 'Form Leads', 'bcb_leadgen' ),
@@ -245,16 +240,6 @@ function bcb_leadgen_metaboxes() {
     $leadform->add_field( array(
         'id'        => 'ads',
         'type'      => 'gf_entries',
-    ) );
-
-
-
-    /*
-    $leadpage->add_field( array(
-        'name' => esc_html__( 'Form ID', 'bcb_leadgen' ),
-        'desc' => esc_html__( 'Gravity Form ID', 'bcb_leadgen' ),
-        'id'   => $prefix . 'form_id',
-        'type' => 'hidden',
     ) );
     */
 

@@ -39,7 +39,16 @@
 						<h1 class="entry-title"><?php the_title(); ?></h1>
 					</div>
 					<div class="col-sm-6">
-						<?php the_post_thumbnail( 'full' ); ?>
+						<?php
+
+							if( ! empty( $banner = get_post_meta( $post->ID, 'leadpage_banner', true ) ) ) {
+								printf( '<img src="%s" />', esc_url( $banner ) );
+							}elseif( has_post_thumbnail( $post->ID ) ) {
+								the_post_thumbnail( 'full' );
+							}
+							
+						
+						?>
 					</div>
 				</div>
 			</div>
