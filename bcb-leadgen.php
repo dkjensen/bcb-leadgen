@@ -17,6 +17,7 @@ define( 'BCB_LEADGEN_URL',   plugin_dir_url( __FILE__ ) );
 require_once 'includes/bcb-leadgen-post-types.php';
 require_once 'includes/bcb-leadgen-templates.php';
 require_once 'includes/bcb-leadgen-scripts.php';
+require_once 'includes/bcb-leadgen-hooks.php';
 
 if( is_admin() ) {
     require_once 'vendor/autoload.php';

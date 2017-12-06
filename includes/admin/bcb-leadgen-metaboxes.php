@@ -4,6 +4,205 @@ if( ! defined( 'ABSPATH' ) )
     exit;
 
 
+function bcb_leadgen_admin_menu() {
+    add_menu_page( __( 'Leads System', 'bcb-leadgen' ), __( 'Leads System', 'bcb-leadgen' ), 'edit_pages', 'bcb-leadsys', 'bcb_leadgen_leads_system_callback', 'dashicons-chart-line', 25 );
+    add_submenu_page( 'bcb-leadsys', __( 'Lead Categories', 'bcb-leadgen' ), __( 'Lead Categories', 'bcb-leadgen' ), 'manage_options', 'edit-tags.php?taxonomy=lead_cat&post_type=leadpage', null );
+}
+add_action( 'admin_menu', 'bcb_leadgen_admin_menu', 5 );
+
+
+function bcb_leadgen_leads_system_callback() {
+    $lead_categories = get_terms( array(
+        'taxonomy'      => 'lead_cat',
+        'hide_empty'    => false,
+    ) );
+
+    ?>
+
+    <style>
+        .lead-cat-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .lead-cat-wrapper .lead-cat {
+            flex: 0 0 auto;
+            width: 49%;
+            width: calc( 50% - 10px );
+        }
+
+        @media screen and (max-width: 782px) {
+            .lead-cat-wrapper .lead-cat {
+                flex: 1 1 100%;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <div class="wrap">
+        <h1><?php _e( 'Leads System', 'bcb-leadgen' ); ?></h1>
+
+        <div class="lead-cat-wrapper">
+        
+        <?php 
+            foreach( $lead_categories as $category ) :
+
+            $leadpages = get_posts( array( 
+                'post_type'         => 'leadpage', 
+                'posts_per_page'    => -1, 
+                'tax_query'         => array( 
+                    array( 
+                        'taxonomy'  => 'lead_cat', 
+                        'field'     => 'term_id', 
+                        'terms'     => $category->term_id 
+                    ) 
+                )
+            ) );
+            
+        ?>
+
+        <script>
+
+			( function( $, window, undefined ) {
+
+				$(document).ready(function() {
+					$('[name="export_lead"]').click(function () {
+                        process( $(this).closest('form') );
+
+						return false;
+					});
+                });
+                
+                function process( form, offset, exportId ) {
+                    if ( typeof offset == 'undefined' ) {
+						offset = 0;
+					}
+
+					if ( typeof exportId == 'undefined' ) {
+						exportId = 0;
+                    }
+                    
+                    var formId = form.find('[name="export_form"]').val();
+                    var data   = form.serialize();
+
+                    data += '&action=gf_process_export';
+                    data += '&offset=' + offset;
+                    data += '&exportId='+ exportId;
+
+                    form.find('.spinner').addClass('is-active');
+                    form.find(':submit').attr('disabled', 'disabled');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: ajaxurl,
+                        data: data,
+                        dataType: 'json'
+                    }).done(function( response ) {
+                        if ( response.status == 'in_progress' ) {
+                            process( form, response.offset, response.exportId );
+                        } else if ( response.status == 'complete' ) {
+                            var url = ajaxurl + '?action=gf_download_export&_wpnonce=<?php echo wp_create_nonce( 'gform_download_export' ); ?>&export-id=' + response.exportId + '&form-id=' + formId;
+                            document.location.href = url;
+
+                            form.find('.spinner').removeClass('is-active');
+                            form.find(':submit').removeAttr('disabled');
+                        }
+                    });
+                }
+
+            }( jQuery, window ));
+            
+        </script>
+
+            <div class="lead-cat postbox">
+                <div class="inside">
+                    <h3><?php print __( 'Lead Campaign:', 'bcb-leadgen' ) . ' ' . $category->name; ?></h3>
+                    <?php if( ! empty( $leadpages ) ) : ?>
+                    <table class="widefat striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" width="35%"><?php _e( 'Lead Page Title', 'bcb-leadgen' ); ?></th>
+                                <th scope="col" width="15%"><?php _e( 'Lead Count', 'bcb-leadgen' ); ?></th>
+                                <th scope="col" width="17.5%"><?php _e( 'Created Date', 'bcb-leadgen' ); ?></th>
+                                <th scope="col" width="17.5%"><?php _e( 'Expiration Date', 'bcb-leadgen' ); ?></th>
+                                <th scope="col" width="15%" style="text-align: right;"><?php _e( 'Export CSV', 'bcb-leadgen' ); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            foreach( $leadpages as $leadpage ) : 
+                                $form_id = get_post_meta( $leadpage->ID, 'leadpage_form_id', true );
+                                $form_entries = (int) ( class_exists( 'GFAPI' ) && $form_id ) ? GFAPI::count_entries( $form_id ) : 0;
+                        ?>
+
+                            <tr>
+                                <td><strong><a href="<?php print get_edit_post_link( $leadpage->ID ); ?>"><?php print get_the_title( $leadpage->ID ); ?></a></strong></td>
+                                <td><?php print $form_entries; ?></td>
+                                <td><?php print get_the_date( get_option( 'date_format' ), $leadpage->ID ); ?></td>
+                                <td>-</td>
+                                <td style="text-align: right;">
+                                <?php
+                                    if( class_exists( 'GFAPI' ) && $form_entries ) :
+                                        $gform = GFAPI::get_form( $form_id );
+
+                                        if( $gform && ! is_wp_error( $gform ) ) :
+                                            $fields = (array) wp_list_pluck( $gform['fields'], 'id' );
+                                ?>
+
+                                    <form method="post" action="">
+                                        <?php wp_nonce_field( 'rg_start_export', 'rg_start_export_nonce' ); ?>
+                                        <?php array_walk( $fields, function( $value, $key ) { printf( '<input type="hidden" name="export_field[]" value="%d" />', (int) $key ); } ); ?>
+                                        <input type="hidden" name="export_field[]" value="date_created" />
+                                        <input type="hidden" name="export_field[]" value="source_url" />
+                                        <input type="hidden" name="export_field[]" value="ip" />
+                                        <input type="hidden" name="export_field[]" value="user_agent" />
+                                        <input type="hidden" name="export_form" value="<?php print $form_id; ?>" />
+                                        <button type="submit" name="export_lead" class="button button-primary" style="float: right;"><span class="dashicons dashicons-download" style="vertical-align: middle;"></span></button>
+                                        <span class="spinner"></span>
+                                    </form>
+
+                                <?php
+                                        endif;
+
+                                    endif; 
+                                ?>
+                                </td>
+                            </tr>
+
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php else : ?>
+
+                    <p><em><?php _e( 'There are no lead pages to display in this category.', 'bcb-leadgen' ); ?></em></p>
+
+                    <?php endif; ?>
+                </div>
+            </div>
+
+        <?php endforeach; ?>
+
+        </div>
+    </div>
+
+    <?php
+}
+
+
+function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
+    ob_start();
+
+    //require_once( GFCommon::get_base_path() . '/entry_list.php' );
+
+    //GFEntryList::leads_page( 1 );
+
+   //$table = ob_get_contents();
+
+    ob_end_clean();
+}
+add_action( 'cmb2_render_gf_entries', 'cmb2_render_callback_for_gf_entries', 10, 5 );
+
 function bcb_leadgen_metaboxes() {
     require_once BCB_LEADGEN_PATH . 'vendor/webdevstudios/cmb2/init.php';
 
@@ -37,6 +236,20 @@ function bcb_leadgen_metaboxes() {
         'type'       => 'colorpicker',
         'default'    => '#222222',
     ) );
+
+    $leadform = new_cmb2_box( array(
+        'id'            => $prefix . 'leadform',
+        'title'         => esc_html__( 'Form Leads', 'bcb_leadgen' ),
+        'object_types'  => array( 'leadpage' ),
+        'save_fields'   => false,
+    ) );
+
+    $leadform->add_field( array(
+        'id'        => 'ads',
+        'type'      => 'gf_entries',
+    ) );
+
+
 
     /*
     $leadpage->add_field( array(
