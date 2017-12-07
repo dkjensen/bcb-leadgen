@@ -150,7 +150,7 @@ function bcb_leadgen_leads_manager_callback() {
                     </table>
                     <?php else : ?>
 
-                    <p><em><?php _e( 'There are no lead pages to display in this category.', 'bcb-leadgen' ); ?></em></p>
+                    <p><em><?php _e( 'There are no lead pages to display in this campaign.', 'bcb-leadgen' ); ?></em></p>
 
                     <?php endif; ?>
                 </div>
@@ -166,15 +166,96 @@ function bcb_leadgen_leads_manager_callback() {
 
 
 function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
-    ob_start();
+    $form_id = get_post_meta( $object_id, 'leadpage_form_id', true );
+
+    $form_entries = (int) ( class_exists( 'GFAPI' ) && $form_id ) ? GFAPI::count_entries( $form_id ) : 0;
+
+    printf( '<strong>%s:</strong> %d', __( 'Total Entries', 'bcb-leadgen' ), $form_entries );
+
+
+    if( class_exists( 'GFAPI' ) && $form_entries ) :
+        $gform = GFAPI::get_form( $form_id );
+
+        if( $gform && ! is_wp_error( $gform ) ) :
+            $fields = (array) wp_list_pluck( $gform['fields'], 'id' );
+    ?>
+
+        <script>
+
+			( function( $, window, undefined ) {
+
+				$(document).ready(function() {
+					$('[name="export_lead"]').click(function () {
+                        process( $(this).closest('form') );
+
+						return false;
+					});
+                });
+                
+                function process( form, offset, exportId ) {
+                    if ( typeof offset == 'undefined' ) {
+						offset = 0;
+					}
+
+					if ( typeof exportId == 'undefined' ) {
+						exportId = 0;
+                    }
+                    
+                    var formId = form.find('[name="export_form"]').val();
+                    var data   = form.serialize();
+
+                    data += '&action=gf_process_export';
+                    data += '&offset=' + offset;
+                    data += '&exportId='+ exportId;
+
+                    form.find('.spinner').addClass('is-active');
+                    form.find(':submit').attr('disabled', 'disabled');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: ajaxurl,
+                        data: data,
+                        dataType: 'json'
+                    }).done(function( response ) {
+                        if ( response.status == 'in_progress' ) {
+                            process( form, response.offset, response.exportId );
+                        } else if ( response.status == 'complete' ) {
+                            var url = ajaxurl + '?action=gf_download_export&_wpnonce=<?php echo wp_create_nonce( 'gform_download_export' ); ?>&export-id=' + response.exportId + '&form-id=' + formId;
+                            document.location.href = url;
+
+                            form.find('.spinner').removeClass('is-active');
+                            form.find(':submit').removeAttr('disabled');
+                        }
+                    });
+                }
+
+            }( jQuery, window ));
+            
+        </script>
+
+        <form method="post" action="">
+            <?php wp_nonce_field( 'rg_start_export', 'rg_start_export_nonce' ); ?>
+            <?php array_walk( $fields, function( $value, $key ) { printf( '<input type="hidden" name="export_field[]" value="%d" />', (int) $value ); } ); ?>
+            <input type="hidden" name="export_form" value="<?php print $form_id; ?>" />
+            <button type="submit" name="export_lead" class="button button-primary" style="float: right;"><span class="dashicons dashicons-download" style="vertical-align: middle;"></span> <?php _e( 'Download', 'bcb-leadgen' ); ?></button>
+            <span class="spinner"></span>
+        </form>
+
+    <?php
+        endif;
+
+    endif; 
+
+
+    //ob_start();
 
     //require_once( GFCommon::get_base_path() . '/entry_list.php' );
 
     //GFEntryList::leads_page( 1 );
 
-   //$table = ob_get_contents();
+    //$table = ob_get_contents();
 
-    ob_end_clean();
+    //ob_end_clean();
 }
 add_action( 'cmb2_render_gf_entries', 'cmb2_render_callback_for_gf_entries', 10, 5 );
 
@@ -229,19 +310,21 @@ function bcb_leadgen_metaboxes() {
         'classes'    => 'col-6',
     ) );
 
-    /*
+    
     $leadform = new_cmb2_box( array(
         'id'            => $prefix . 'leadform',
-        'title'         => esc_html__( 'Form Leads', 'bcb_leadgen' ),
+        'title'         => esc_html__( 'Lead Entries', 'bcb_leadgen' ),
         'object_types'  => array( 'leadpage' ),
         'save_fields'   => false,
+        'context'       => 'side',
+        'priority'      => 'high'
     ) );
 
     $leadform->add_field( array(
         'id'        => 'ads',
         'type'      => 'gf_entries',
     ) );
-    */
+    
 
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );
