@@ -51,3 +51,22 @@ function bcb_leadgen_filter_text( $translated_text, $text, $context, $domain ) {
     return $translated_text;
 }
 add_filter( 'gettext_with_context', 'bcb_leadgen_filter_text', 10, 4 );
+
+
+function bcb_leadgen_leadpage_link( $permalink, $post ) {
+    if( false === strpos( $permalink, '%lead_cat%') ) 
+        return $permalink;
+ 
+    $terms = wp_get_post_terms( $post->ID, 'lead_cat' );
+
+    if( 0 < count( $terms ) ) {
+        $location = $terms[0]->slug;
+    }else {
+        $location = apply_filters( 'bcb_leadgen_leadpage_default_base', 'uncategorized', $post );
+    }
+
+    $permalink = str_replace( '%lead_cat%', urlencode( $location ), $permalink );
+  
+    return $permalink;
+}
+add_filter( 'post_type_link', 'bcb_leadgen_leadpage_link', 10, 2 );

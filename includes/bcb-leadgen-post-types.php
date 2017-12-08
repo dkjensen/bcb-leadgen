@@ -56,6 +56,7 @@ function bcb_leadgen_post_types() {
         'menu_position'      => null,
         'rewrite'            => array(
             'with_front'        => false,
+            'slug'              => '%lead_cat%'
         ),
         'menu_icon'          => 'dashicons-chart-line',
 		'supports'           => array( 'title', 'editor', 'author' )
