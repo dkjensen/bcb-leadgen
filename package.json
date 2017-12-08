@@ -3,11 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "bcb-leadgen.php",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "David Jensen",
-  "license": "ISC",
   "devDependencies": {
     "bootstrap": "^3.3.7",
     "gulp": "^3.9.1",
