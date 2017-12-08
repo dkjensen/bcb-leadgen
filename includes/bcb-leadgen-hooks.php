@@ -23,7 +23,7 @@ function bcb_leadgen_create_form( $post_id, $post, $update ) {
         case 'future' :
         case 'private' :
             if( empty( $form_id ) ) {
-                $forms_json = file_get_contents( BCB_LEADGEN_PATH . '/includes/gravityforms/bcb-leadgen-form-default.json' );
+                $forms_json = file_get_contents( apply_filters( 'bcb_leadgen_default_form', BCB_LEADGEN_PATH . '/includes/gravityforms/bcb-leadgen-form-default.json', $post ) );
                 
                 $forms = json_decode( $forms_json, true );
                 
