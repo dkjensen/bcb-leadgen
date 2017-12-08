@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Broadcast Beat - Lead Generation
+ * Plugin Name: Broadcast Beat - Lead Manager
  * Description: Lead generation pages, categorization and more
  * Author: David Jensen
  * Author URI: https://dkjensen.com
