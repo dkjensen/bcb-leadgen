@@ -9,7 +9,22 @@ add_filter( 'gform_enable_field_label_visibility_settings', '__return_true' );
 
 
 function bcb_leadgen_filter_gf_form( $form_string, $form ) {
-    $form_string = $form_string . '123';
+    if( is_singular( 'leadpage' ) ) {
+        $terms = get_post_meta( get_queried_object_id(), 'leadpage_form_terms', true );
+
+        if( ! empty( $terms ) && class_exists( 'DOMDocument' ) ) {
+            $dom = new DOMDocument();
+            $dom->loadHTML( $form_string );
+
+            $formEl = $dom->getElementById( 'gform_' . $form['id'] );
+
+            $terms = $dom->createElement( 'div', $terms ); 
+            $terms = $formEl->appendChild( $terms );
+            $terms->setAttribute( 'class', 'gform_terms' );
+
+            $form_string = $dom->saveHTML();
+        }
+    }
 
     return $form_string;
 }

@@ -244,9 +244,8 @@ function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id
     <?php
         endif;
 
-    endif; 
-
-
+    endif;
+    
     //ob_start();
 
     //require_once( GFCommon::get_base_path() . '/entry_list.php' );
@@ -315,7 +314,7 @@ function bcb_leadgen_metaboxes() {
     $terms->add_field( array(
         'name'       => esc_html__( 'Form Terms', 'bcb_leadgen' ),
         'desc'       => esc_html__( 'Copy to display at the end of the lead form', 'bcb_leadgen' ),
-        'id'         => $prefix . 'terms',
+        'id'         => $prefix . 'form_terms',
         'type'       => 'wysiwyg',
         'options'    => array(
             'media_buttons'     => false,

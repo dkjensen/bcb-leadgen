@@ -86,6 +86,12 @@ body {
 
         .gform_wrapper {
 
+            form {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+            }
+
             ul {
                 display: block;
                 list-style: none;
@@ -105,6 +111,10 @@ body {
 
                 &.gform_validation_container {
                     display: none !important;
+                }
+
+                &.hidden_label .gfield_label {
+                    display: none;
                 }
 
                 input,
@@ -136,8 +146,15 @@ body {
                 margin: 0 0 1em;
             }
 
+            .gform_terms {
+                font-size: .875em;
+                margin: 1em 0 0;
+            }
+
             .gform_footer {
+                order: 10;
                 text-align: center;
+                margin: 1em 0 0;
 
                 input[type="submit"],
                 input[type="reset"],
