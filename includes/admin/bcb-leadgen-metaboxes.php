@@ -264,32 +264,28 @@ function bcb_leadgen_metaboxes() {
 
     $prefix = 'leadpage_';
 
-    $imagery = new_cmb2_box( array(
-        'id'            => $prefix . 'imagery',
-        'title'         => esc_html__( 'Logo & Imagery', 'bcb_leadgen' ),
+    $leadpage = new_cmb2_box( array(
+        'id'            => $prefix . 'options',
+        'title'         => esc_html__( 'Leadpage Options', 'bcb_leadgen' ),
         'object_types'  => array( 'leadpage' ),
+        'context'       => 'after_title',
+        'priority'      => 'high',
     ) );
 
-    $imagery->add_field( array(
+    $leadpage->add_field( array(
         'name'       => esc_html__( 'Logo Image', 'bcb_leadgen' ),
         'desc'       => esc_html__( 'Logo to display at top of lead page', 'bcb_leadgen' ),
         'id'         => $prefix . 'logo',
         'type'       => 'file',
+        'classes'    => 'col-6',
     ) );
 
-    $imagery->add_field( array(
+    $leadpage->add_field( array(
         'name'       => esc_html__( 'Banner Image', 'bcb_leadgen' ),
         'desc'       => esc_html__( 'Image to display in the banner section next to the title', 'bcb_leadgen' ),
         'id'         => $prefix . 'banner',
         'type'       => 'file',
-    ) );
-
-    $leadpage = new_cmb2_box( array(
-        'id'            => $prefix . 'options',
-        'title'         => esc_html__( 'Design & Color Scheme', 'bcb_leadgen' ),
-        'object_types'  => array( 'leadpage' ),
-        'context'       => 'after_title',
-        'priority'      => 'high',
+        'classes'    => 'col-6',
     ) );
 
     $leadpage->add_field( array(
