@@ -306,6 +306,22 @@ function bcb_leadgen_metaboxes() {
         'classes'    => 'col-6',
     ) );
 
+    $terms = new_cmb2_box( array(
+        'id'            => $prefix . 'form_options',
+        'title'         => esc_html__( 'Form Options', 'bcb_leadgen' ),
+        'object_types'  => array( 'leadpage' ),
+    ) );
+
+    $terms->add_field( array(
+        'name'       => esc_html__( 'Form Terms', 'bcb_leadgen' ),
+        'desc'       => esc_html__( 'Copy to display at the end of the lead form', 'bcb_leadgen' ),
+        'id'         => $prefix . 'terms',
+        'type'       => 'wysiwyg',
+        'options'    => array(
+            'media_buttons'     => false,
+            'textarea_rows'     => 5,
+        ),
+    ) );
     
     $leadform = new_cmb2_box( array(
         'id'            => $prefix . 'leadform',
