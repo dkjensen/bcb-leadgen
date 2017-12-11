@@ -27,14 +27,14 @@ if( is_admin() ) {
 
 register_activation_hook( __FILE__, function() {
     bcb_leadgen_post_types();
-    no_lead_cat_base_rewrite_rules();
+    bcb_lead_cat_base_rewrite_rules();
 
     flush_rewrite_rules();
 } );
 
 
 register_deactivation_hook(__FILE__,  function() {
-    remove_filter( 'lead_cat_rewrite_rules', 'no_lead_cat_base_rewrite_rules' );
+    remove_filter( 'lead_cat_rewrite_rules', 'bcb_lead_cat_base_rewrite_rules' );
 
     flush_rewrite_rules();
 } );
