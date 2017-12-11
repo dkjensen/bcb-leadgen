@@ -66,14 +66,7 @@ function bcb_leadgen_post_types() {
 add_action( 'init', 'bcb_leadgen_post_types', -10 );
 
 
-/**
- * Adds our custom lead_cat rewrite rules.
- *
- * @param  array $lead_cat_rewrite lead_cat rewrite rules.
- *
- * @return array
- */
-function no_lead_cat_base_rewrite_rules( $lead_cat_rewrite = array() ) {
+function bcb_lead_cat_base_rewrite_rules( $lead_cat_rewrite = array() ) {
     global $wp_rewrite;
     
 	$lead_cat_rewrite = array();
@@ -100,7 +93,7 @@ function no_lead_cat_base_rewrite_rules( $lead_cat_rewrite = array() ) {
 
 	return $lead_cat_rewrite;
 }
-add_filter( 'lead_cat_rewrite_rules', 'no_lead_cat_base_rewrite_rules' );
+add_filter( 'lead_cat_rewrite_rules', 'bcb_lead_cat_base_rewrite_rules' );
 
 add_action( 'created_lead_cat',  'flush_rewrite_rules' );
 add_action( 'delete_lead_cat',   'flush_rewrite_rules' );

@@ -54,9 +54,9 @@ add_filter( 'gettext_with_context', 'bcb_leadgen_filter_text', 10, 4 );
 
 
 function bcb_leadgen_leadpage_link( $permalink, $post ) {
-    if( false === strpos( $permalink, '%lead_cat%') ) 
+    if( $post->post_type !== 'leadpage' )
         return $permalink;
- 
+
     $terms = wp_get_post_terms( $post->ID, 'lead_cat' );
 
     if( 0 < count( $terms ) ) {
@@ -65,8 +65,8 @@ function bcb_leadgen_leadpage_link( $permalink, $post ) {
         $location = apply_filters( 'bcb_leadgen_leadpage_default_base', 'uncategorized', $post );
     }
 
-    $permalink = str_replace( '%lead_cat%', urlencode( $location ), $permalink );
-  
+    $permalink = trailingslashit( home_url( urlencode( $location ) . '/' . $post->post_name ) );
+
     return $permalink;
 }
 add_filter( 'post_type_link', 'bcb_leadgen_leadpage_link', 10, 2 );
