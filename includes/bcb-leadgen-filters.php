@@ -35,6 +35,16 @@ function bcb_leadgen_form_file_download( $confirmation, $form, $entry, $ajax ) {
     if( is_singular( 'leadpage' ) ) {
         $download = get_post_meta( get_queried_object_id(), 'leadpage_form_file_id', true );
         
+        $terms = wp_get_post_terms( get_queried_object_id(), 'lead_cat' );
+    
+        if( 0 < count( $terms ) ) {
+            $redirect = get_term_link( $terms[0]->term_id );
+        }else {
+            $redirect = home_url();
+        }
+
+        $confirmation .= "<br>" . __( 'You will automatically be redirected in 5 seconds...', 'bcb_leadgen' );
+
         if( ! empty( $download ) ) {
             $url = add_query_arg( array( 'bcb-leadgen-dl' => 1, '_wpnonce' => wp_create_nonce( 'rg_bcb_leadgen_download' ) ), get_permalink( get_queried_object_id() ) );
 
@@ -43,6 +53,8 @@ function bcb_leadgen_form_file_download( $confirmation, $form, $entry, $ajax ) {
             });
             </script>";
         }
+
+        $confirmation .= "<script>window.setTimeout(function(){ window.location.href = '" . $redirect . "'; }, 5000);</script>";
     }
 
     return $confirmation;
