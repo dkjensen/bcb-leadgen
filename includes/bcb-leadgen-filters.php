@@ -31,6 +31,25 @@ function bcb_leadgen_filter_gf_form( $form_string, $form ) {
 add_filter( 'gform_get_form_filter', 'bcb_leadgen_filter_gf_form', 10, 2 );
 
 
+function bcb_leadgen_form_file_download( $confirmation, $form, $entry, $ajax ) {
+    if( is_singular( 'leadpage' ) ) {
+        $download = get_post_meta( get_queried_object_id(), 'leadpage_form_file_id', true );
+        
+        if( ! empty( $download ) ) {
+            $url = add_query_arg( array( 'bcb-leadgen-dl' => 1, '_wpnonce' => wp_create_nonce( 'rg_bcb_leadgen_download' ) ), get_permalink( get_queried_object_id() ) );
+
+            $confirmation .= "<script>window.top.jQuery( document ).ready(function() {
+                window.top.jQuery(document).bind('gform_confirmation_loaded', function () {document.location.href = '" . $url . "';});
+            });
+            </script>";
+        }
+    }
+
+    return $confirmation;
+}
+add_filter( 'gform_confirmation', 'bcb_leadgen_form_file_download', 10, 4 );
+
+
 function bcb_leadgen_filter_text( $translated_text, $text, $context, $domain ) {
     if( is_admin() ) {
         if( ( isset( $_GET['post'] ) && 'leadpage' == get_post_type( $_GET['post'] ) ) || ( isset( $_GET['page'] ) && $_GET['page'] == 'bcb-leadsys' ) || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'leadpage' ) ) {

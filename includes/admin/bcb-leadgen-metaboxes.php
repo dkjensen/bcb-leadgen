@@ -305,13 +305,30 @@ function bcb_leadgen_metaboxes() {
         'classes'    => 'col-6',
     ) );
 
-    $terms = new_cmb2_box( array(
+    $form = new_cmb2_box( array(
         'id'            => $prefix . 'form_options',
         'title'         => esc_html__( 'Form Options', 'bcb_leadgen' ),
         'object_types'  => array( 'leadpage' ),
     ) );
 
-    $terms->add_field( array(
+    $form->add_field( array(
+        'name'    => esc_html__( 'File Download', 'bcb_leadgen' ),
+        'desc'    => esc_html__( 'Upload a file which will download upon form completion', 'bcb_leadgen' ),
+        'id'      => $prefix . 'form_file',
+        'type'    => 'file',
+        'options' => array(
+            'url' => false,
+        ),
+        'text'    => array(
+            'add_upload_file_text' => 'Add File'
+        ),
+        'query_args' => array(
+            'type' => 'application/pdf',
+        ),
+        'preview_size' => 'large',
+    ) );
+
+    $form->add_field( array(
         'name'       => esc_html__( 'Form Terms', 'bcb_leadgen' ),
         'desc'       => esc_html__( 'Copy to display at the end of the lead form', 'bcb_leadgen' ),
         'id'         => $prefix . 'form_terms',

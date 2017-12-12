@@ -62,6 +62,39 @@ function bcb_leadgen_create_form( $post_id, $post, $update ) {
 }
 add_action( 'save_post_leadpage', 'bcb_leadgen_create_form', 10, 3 );
 
+
+function bcb_leadgen_ajax_file_download() {
+    if( isset( $_GET['bcb-leadgen-dl'] ) ) {
+        check_admin_referer( 'rg_bcb_leadgen_download' );
+
+        $leadpage = get_queried_object_id();
+
+        $download = get_post_meta( $leadpage, 'leadpage_form_file_id', true );
+
+        if( ! empty( $download ) ) {
+            $attachment = get_attached_file( $download, true );
+
+            if( $attachment ) {
+                header( 'Content-Description: File Transfer' );
+                header( 'Content-Type: application/pdf' );
+                header( 'Content-Disposition: attachment; filename="' . basename( $attachment ) . '"' );
+                header( 'Content-Transfer-Encoding: binary' );
+                header( 'Expires: 0' );
+                header( 'Cache-Control: must-revalidate' );
+                header( 'Pragma: public' );
+                header( 'Content-Length: ' . filesize( $attachment ) );
+        
+                readfile( $attachment );
+                exit;
+            }
+        }
+
+        
+    }
+}
+add_action( 'template_redirect', 'bcb_leadgen_ajax_file_download', 0 );
+
+
 function bcb_leadgen_leadpage_expirator( $post ) {
     global $action;
 
