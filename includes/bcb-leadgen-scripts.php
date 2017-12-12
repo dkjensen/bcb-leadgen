@@ -6,7 +6,7 @@ if( ! defined( 'ABSPATH' ) )
 
 function bcb_leadgen_scripts() {
     if( is_singular( 'leadpage' ) ) {
-        wp_enqueue_style( 'bcb-leadgen', BCB_LEADGEN_URL . '/assets/css/bcb-leadgen.css', array(), BCB_LEADGEN_VER );
+        wp_enqueue_style( 'bcb-leadgen', BCB_LEADGEN_URL . 'assets/css/bcb-leadgen.css', array(), BCB_LEADGEN_VER );
     }
 }
 add_action( 'wp_enqueue_scripts', 'bcb_leadgen_scripts', 15 );
@@ -16,7 +16,7 @@ function bcb_leadgen_admin_scripts( $hook ) {
     global $post;
 
     if( ( isset( $_GET['post'] ) && 'leadpage' == get_post_type( $_GET['post'] ) ) || ( isset( $_GET['page'] ) && $_GET['page'] == 'bcb-leadsys' ) || ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'leadpage' ) ) {
-        wp_enqueue_style( 'bcb-leadgen-admin', BCB_LEADGEN_URL . '/assets/css/bcb-leadgen-admin.css', array(), BCB_LEADGEN_VER );
+        wp_enqueue_style( 'bcb-leadgen-admin', BCB_LEADGEN_URL . 'assets/css/bcb-leadgen-admin.css', array(), BCB_LEADGEN_VER );
     }
 }
 add_action( 'admin_enqueue_scripts', 'bcb_leadgen_admin_scripts', 15 );

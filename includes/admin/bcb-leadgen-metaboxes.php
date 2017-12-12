@@ -305,6 +305,12 @@ function bcb_leadgen_metaboxes() {
         'classes'    => 'col-6',
     ) );
 
+    $leadpage->add_field( array(
+        'name'       => esc_html__( 'Company Name', 'bcb_leadgen' ),
+        'id'         => $prefix . 'company',
+        'type'       => 'text',
+    ) );
+
     $form = new_cmb2_box( array(
         'id'            => $prefix . 'form_options',
         'title'         => esc_html__( 'Form Options', 'bcb_leadgen' ),
