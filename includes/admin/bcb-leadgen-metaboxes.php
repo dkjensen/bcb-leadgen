@@ -359,6 +359,17 @@ function bcb_leadgen_metaboxes() {
         'type'      => 'gf_entries',
     ) );
     
+    $email = new_cmb2_box( array(
+        'id'            => $prefix . 'email_template',
+        'title'         => esc_html__( 'Email Template', 'bcb_leadgen' ),
+        'object_types'  => array( 'leadpage' ),
+    ) );
 
+    $email->add_field( array(
+        'name'    => esc_html__( 'Email Source', 'bcb_leadgen' ),
+        'id'      => $prefix . 'email_template',
+        'type'    => 'hidden',
+        'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( $_REQUEST['post'] ) . '</textarea>',
+    ) );
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );

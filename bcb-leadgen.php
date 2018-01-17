@@ -19,6 +19,7 @@ require_once 'includes/bcb-leadgen-templates.php';
 require_once 'includes/bcb-leadgen-scripts.php';
 require_once 'includes/bcb-leadgen-hooks.php';
 require_once 'includes/bcb-leadgen-filters.php';
+require_once 'includes/bcb-leadgen-functions.php';
 
 if( is_admin() ) {
     require_once 'vendor/autoload.php';
