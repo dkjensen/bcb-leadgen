@@ -369,7 +369,7 @@ function bcb_leadgen_metaboxes() {
         'name'    => esc_html__( 'Email Source', 'bcb_leadgen' ),
         'id'      => $prefix . 'email_template',
         'type'    => 'hidden',
-        'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( $_REQUEST['post'] ) . '</textarea>',
+        'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( isset( $_REQUEST['post'] ) ? $_REQUEST['post'] : '' ) . '</textarea>',
     ) );
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );

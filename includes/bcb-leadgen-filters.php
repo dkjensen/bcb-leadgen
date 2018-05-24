@@ -101,3 +101,15 @@ function bcb_leadgen_leadpage_link( $permalink, $post ) {
     return $permalink;
 }
 add_filter( 'post_type_link', 'bcb_leadgen_leadpage_link', 10, 2 );
+
+
+add_shortcode( 'gform_embed_title', function( $atts, $content = '' ) {
+    return $content;
+} );
+
+
+add_filter( 'gform_field_choices', function( $choices, $field ) {
+    $choices = str_replace( '[gform_embed_title]', get_the_title( get_queried_object_id() ), $choices );
+
+    return $choices;
+}, 10, 2 );

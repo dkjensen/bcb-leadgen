@@ -5,7 +5,6 @@ if( ! defined( 'ABSPATH' ) )
 
 
 function bcb_leadgen_templates( $template ) {
-
     if( is_singular( 'leadpage' ) ) {
         if( empty( $template = locate_template( array( 'single-leadpage.php' ) ) ) ) {
             $template = BCB_LEADGEN_PATH . 'templates/single-leadpage.php';
