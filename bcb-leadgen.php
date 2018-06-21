@@ -30,6 +30,16 @@ register_activation_hook( __FILE__, function() {
     bcb_leadgen_post_types();
     bcb_lead_cat_base_rewrite_rules();
 
+    $admin = get_role( 'administrator' );
+    $admin->add_cap( 'edit_leadpage' );
+    $admin->add_cap( 'read_leadpage' );
+    $admin->add_cap( 'delete_leadpage' );
+    $admin->add_cap( 'edit_leadpages' );
+    $admin->add_cap( 'edit_others_leadpages' );
+    $admin->add_cap( 'publish_leadpages' );
+    $admin->add_cap( 'read_private_leadpages' );
+    $admin->add_cap( 'edit_leadpages' );
+
     flush_rewrite_rules();
 } );
 
