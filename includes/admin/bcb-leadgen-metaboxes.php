@@ -4,12 +4,22 @@ if( ! defined( 'ABSPATH' ) )
     exit;
 
 
+/**
+ * Register admin options page
+ *
+ * @return void
+ */
 function bcb_leadgen_admin_menu() {
     add_menu_page( __( 'Lead Manager', 'bcb-leadgen' ), __( 'Lead Manager', 'bcb-leadgen' ), 'edit_leadpages', 'bcb-leadsys', 'bcb_leadgen_leads_manager_callback', 'dashicons-chart-line', 25 );
 }
 add_action( 'admin_menu', 'bcb_leadgen_admin_menu', 5 );
 
 
+/**
+ * Lead Manager options page content
+ *
+ * @return void
+ */
 function bcb_leadgen_leads_manager_callback() {
     $lead_categories = get_terms( array(
         'taxonomy'      => 'lead_cat',
@@ -258,8 +268,12 @@ function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id
 }
 add_action( 'cmb2_render_gf_entries', 'cmb2_render_callback_for_gf_entries', 10, 5 );
 
+
+
 function bcb_leadgen_metaboxes() {
     require_once BCB_LEADGEN_PATH . 'vendor/webdevstudios/cmb2/init.php';
+
+    $_post = isset( $_REQUEST['post'] ) ? $_REQUEST['post'] : '';
 
     $prefix = 'leadpage_';
 
@@ -369,7 +383,7 @@ function bcb_leadgen_metaboxes() {
         'name'    => esc_html__( 'Email Source', 'bcb_leadgen' ),
         'id'      => $prefix . 'email_template',
         'type'    => 'hidden',
-        'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( $_REQUEST['post'] ) . '</textarea>',
+        'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( $_post ) . '</textarea>',
     ) );
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );

@@ -68,28 +68,30 @@ add_action( 'init', 'bcb_leadgen_post_types', -10 );
 
 function bcb_lead_cat_base_rewrite_rules( $lead_cat_rewrite = array() ) {
     global $wp_rewrite;
-    
-	$lead_cat_rewrite = array();
 
-	$lead_cats = get_terms( array( 'taxonomy' => 'lead_cat', 'hide_empty' => false ) );
+    if( '' != get_option( 'permalink_structure' ) ) {
+        $lead_cat_rewrite = array();
 
-	foreach( $lead_cats as $lead_cat ) {
-		$lead_cat_nicename = $lead_cat->slug;
+        $lead_cats = get_terms( array( 'taxonomy' => 'lead_cat', 'hide_empty' => false ) );
 
-		if ( $lead_cat->parent == $lead_cat->cat_ID ) {
-			$lead_cat->parent = 0;
-		} elseif ( $lead_cat->parent != 0 ) {
-            $lead_cat_nicename = get_term_parents_list( $lead_cat->parent, 'lead_cat', array( 
-                'link' => false,
-                'format' => 'slug',
-            ) );
-		}
+        foreach( $lead_cats as $lead_cat ) {
+            $lead_cat_nicename = $lead_cat->slug;
 
-		$lead_cat_rewrite['('.$lead_cat_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?lead_cat=$matches[1]&feed=$matches[2]';
-		$lead_cat_rewrite["({$lead_cat_nicename})/{$wp_rewrite->pagination_base}/?([0-9]{1,})/?$"] = 'index.php?lead_cat=$matches[1]&paged=$matches[2]';
-        $lead_cat_rewrite['('.$lead_cat_nicename.')/?$'] = 'index.php?lead_cat=$matches[1]';
-        $lead_cat_rewrite['('.$lead_cat_nicename.')/([^/]+)(?:/([0-9]+))?/?$'] = 'index.php?lead_cat=$matches[1]&leadpage=$matches[2]&page=$matches[3]';
-	}
+            if ( $lead_cat->parent == $lead_cat->cat_ID ) {
+                $lead_cat->parent = 0;
+            } elseif ( $lead_cat->parent != 0 ) {
+                $lead_cat_nicename = get_term_parents_list( $lead_cat->parent, 'lead_cat', array( 
+                    'link' => false,
+                    'format' => 'slug',
+                ) );
+            }
+
+            $lead_cat_rewrite['('.$lead_cat_nicename.')/(?:feed/)?(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?lead_cat=$matches[1]&feed=$matches[2]';
+            $lead_cat_rewrite["({$lead_cat_nicename})/{$wp_rewrite->pagination_base}/?([0-9]{1,})/?$"] = 'index.php?lead_cat=$matches[1]&paged=$matches[2]';
+            $lead_cat_rewrite['('.$lead_cat_nicename.')/?$'] = 'index.php?lead_cat=$matches[1]';
+            $lead_cat_rewrite['('.$lead_cat_nicename.')/([^/]+)(?:/([0-9]+))?/?$'] = 'index.php?lead_cat=$matches[1]&leadpage=$matches[2]&page=$matches[3]';
+        }
+    }
 
 	return $lead_cat_rewrite;
 }
