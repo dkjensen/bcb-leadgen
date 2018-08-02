@@ -26,6 +26,12 @@ function bcb_leadgen_leads_manager_callback() {
         'hide_empty'    => false,
     ) );
 
+    $settings = get_option( 'bcb_lead_manager' );
+
+    $settings = wp_parse_args( $settings, array(
+        'admin_email'       => get_option( 'admin_email' )
+    ) );
+
     ?>
 
     <div class="wrap">
@@ -33,22 +39,22 @@ function bcb_leadgen_leads_manager_callback() {
         <p><a href="<?php print admin_url( 'post-new.php?post_type=leadpage' ); ?>" class="page-title-action"><?php _e( 'Add New Lead Page', 'bcb-leadgen' ); ?></a></p>
 
         <div class="lead-cat-wrapper">
-        
+
         <?php 
             foreach( $lead_categories as $category ) :
 
-            $leadpages = get_posts( array( 
-                'post_type'         => 'leadpage', 
-                'posts_per_page'    => -1, 
-                'tax_query'         => array( 
-                    array( 
-                        'taxonomy'  => 'lead_cat', 
-                        'field'     => 'term_id', 
-                        'terms'     => $category->term_id 
-                    ) 
-                )
-            ) );
-            
+                $leadpages = get_posts( array( 
+                    'post_type'         => 'leadpage', 
+                    'posts_per_page'    => -1, 
+                    'tax_query'         => array( 
+                        array( 
+                            'taxonomy'  => 'lead_cat', 
+                            'field'     => 'term_id', 
+                            'terms'     => $category->term_id 
+                        ) 
+                    )
+                ) );
+                
         ?>
 
         <script>
@@ -169,6 +175,33 @@ function bcb_leadgen_leads_manager_callback() {
         <?php endforeach; ?>
 
         </div>
+
+        <?php if( current_user_can( 'manage_options' ) ) : ?>
+
+        <hr />
+
+        <div class="lead-manager-settings">
+            <h3><?php _e( 'Lead Manager Settings', 'bcb-leadgen' ); ?></h3>
+            <form method="post" action="options.php">
+                <table class="form-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><label><?php _e( 'Lead Manager Email', 'bcb-leadgen' ); ?></label></th>
+                            <td>
+                                <input type="text" class="regular-text" name="bcb_lead_manager[admin_email]" value="<?php print esc_attr( $settings['admin_email'] ); ?>" />
+                                <p class="description"><?php _e( 'Email to receive the lead generation weekly digest report.', 'bcb-leadgen' ); ?></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <?php wp_nonce_field( 'bcb_lead_manager' ); ?>
+
+                <?php submit_button(); ?>
+            </form>
+        </div>
+
+        <?php endif; ?>
     </div>
 
     <?php
@@ -323,6 +356,12 @@ function bcb_leadgen_metaboxes() {
         'name'       => esc_html__( 'Company Name', 'bcb_leadgen' ),
         'id'         => $prefix . 'company',
         'type'       => 'text',
+    ) );
+
+    $leadpage->add_field( array(
+        'name'       => esc_html__( 'Client Email', 'bcb_leadgen' ),
+        'id'         => $prefix . 'client_email',
+        'type'       => 'text_email',
     ) );
 
     $form = new_cmb2_box( array(

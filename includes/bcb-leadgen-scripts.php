@@ -21,6 +21,7 @@ function bcb_leadgen_admin_scripts( $hook ) {
 }
 add_action( 'admin_enqueue_scripts', 'bcb_leadgen_admin_scripts', 15 );
 
+
 function bcb_leadgen_gf_scripts() {
     if( is_singular( 'leadpage' ) && function_exists( 'gravity_form_enqueue_scripts' ) ) {
         gravity_form_enqueue_scripts( (int) get_post_meta( get_queried_object_id(), 'leadpage_form_id', true ), true );

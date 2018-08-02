@@ -30,6 +30,10 @@ register_activation_hook( __FILE__, function() {
     bcb_leadgen_post_types();
     bcb_lead_cat_base_rewrite_rules();
 
+    if( ! wp_next_scheduled( 'bcb_leadgen_cron_leadpage_report' ) ) {
+        wp_schedule_event( strtotime( 'Friday 08:00 ' . get_option( 'timezone_string' ) ), 'weekly', 'bcb_leadgen_cron_leadpage_report' );
+    }
+
     $admin = get_role( 'administrator' );
     $admin->add_cap( 'edit_leadpage' );
     $admin->add_cap( 'read_leadpage' );
