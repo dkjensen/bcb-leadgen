@@ -228,7 +228,7 @@ function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id
 			( function( $, window, undefined ) {
 
 				$(document).ready(function() {
-					$('[name="export_lead"]').click(function () {
+					$('[name="export_lead"]').click(function(e) {
                         process( $(this).closest('form') );
 
 						return false;
@@ -438,32 +438,34 @@ function bcb_leadgen_metaboxes_leads( $post ) {
                 if( $form && $form['fields'] ) :
                 ?>
 
-                <table class="widefat" id="leads-form-<?php print $form['id']; ?>">
-                    <thead>
-                        <tr>
-                            <th style="display: none;"><?php esc_html_e( 'Entry ID', 'bcb-leadgen' ); ?></th>
-                            <?php foreach( $form['fields'] as $field ) : $fields[$field->id] = $field->label; ?>
-                                    
-                                <th><?php esc_html_e( $field->label, 'bcb-leadgen' ); ?></th>
+                <form method="post">
+                    <table class="widefat" id="leads-form-<?php print $form['id']; ?>">
+                        <thead>
+                            <tr>
+                                <th style="display: none;"><?php esc_html_e( 'Entry ID', 'bcb-leadgen' ); ?></th>
+                                <?php foreach( $form['fields'] as $field ) : $fields[$field->id] = $field->label; ?>
+                                        
+                                    <th><?php esc_html_e( $field->label, 'bcb-leadgen' ); ?></th>
 
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach( $entries as $entry ) : ?>
-                        <tr>
-                            <td><?php print esc_html( $entry['id'] ); ?></td>
-                            <?php
-                                $entry_fields = $entry;
+                                <?php endforeach; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach( $entries as $entry ) : ?>
+                            <tr>
+                                <td><?php print esc_html( $entry['id'] ); ?></td>
+                                <?php
+                                    $entry_fields = $entry;
 
-                                foreach( $fields as $key => $field ) {
-                                    printf( '<td>%s</td>', array_key_exists( $key, $entry_fields ) ? esc_html( $entry_fields[$key] ) : '&nbsp;' );   
-                                }
-                            ?>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                                    foreach( $fields as $key => $field ) {
+                                        printf( '<td>%s</td>', array_key_exists( $key, $entry_fields ) ? esc_html( $entry_fields[$key] ) : '&nbsp;' );   
+                                    }
+                                ?>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </form>
 
                 <?php
 
