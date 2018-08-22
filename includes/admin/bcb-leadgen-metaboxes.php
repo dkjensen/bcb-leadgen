@@ -288,16 +288,6 @@ function cmb2_render_callback_for_gf_entries( $field, $escaped_value, $object_id
         endif;
 
     endif;
-    
-    //ob_start();
-
-    //require_once( GFCommon::get_base_path() . '/entry_list.php' );
-
-    //GFEntryList::leads_page( 1 );
-
-    //$table = ob_get_contents();
-
-    //ob_end_clean();
 }
 add_action( 'cmb2_render_gf_entries', 'cmb2_render_callback_for_gf_entries', 10, 5 );
 
@@ -312,31 +302,31 @@ function bcb_leadgen_metaboxes() {
 
     $leadpage = new_cmb2_box( array(
         'id'            => $prefix . 'options',
-        'title'         => esc_html__( 'Leadpage Options', 'bcb_leadgen' ),
+        'title'         => esc_html__( 'Leadpage Options', 'bcb-leadgen' ),
         'object_types'  => array( 'leadpage' ),
         'context'       => 'after_title',
         'priority'      => 'high',
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Logo Image', 'bcb_leadgen' ),
-        'desc'       => esc_html__( 'Logo to display at top of lead page', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Logo Image', 'bcb-leadgen' ),
+        'desc'       => esc_html__( 'Logo to display at top of lead page', 'bcb-leadgen' ),
         'id'         => $prefix . 'logo',
         'type'       => 'file',
         'classes'    => 'col-6',
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Banner Image', 'bcb_leadgen' ),
-        'desc'       => esc_html__( 'Image to display in the banner section next to the title', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Banner Image', 'bcb-leadgen' ),
+        'desc'       => esc_html__( 'Image to display in the banner section next to the title', 'bcb-leadgen' ),
         'id'         => $prefix . 'banner',
         'type'       => 'file',
         'classes'    => 'col-6',
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Primary Color', 'bcb_leadgen' ),
-        'desc'       => esc_html__( 'Background color to display behind title and main image section', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Primary Color', 'bcb-leadgen' ),
+        'desc'       => esc_html__( 'Background color to display behind title and main image section', 'bcb-leadgen' ),
         'id'         => $prefix . 'color_primary',
         'type'       => 'colorpicker',
         'default'    => '#0f73c3',
@@ -344,8 +334,8 @@ function bcb_leadgen_metaboxes() {
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Secondary Color', 'bcb_leadgen' ),
-        'desc'       => esc_html__( 'Background color to display the header and footer bars', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Secondary Color', 'bcb-leadgen' ),
+        'desc'       => esc_html__( 'Background color to display the header and footer bars', 'bcb-leadgen' ),
         'id'         => $prefix . 'color_secondary',
         'type'       => 'colorpicker',
         'default'    => '#222222',
@@ -353,26 +343,26 @@ function bcb_leadgen_metaboxes() {
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Company Name', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Company Name', 'bcb-leadgen' ),
         'id'         => $prefix . 'company',
         'type'       => 'text',
     ) );
 
     $leadpage->add_field( array(
-        'name'       => esc_html__( 'Client Email', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Client Email', 'bcb-leadgen' ),
         'id'         => $prefix . 'client_email',
         'type'       => 'text_email',
     ) );
 
     $form = new_cmb2_box( array(
         'id'            => $prefix . 'form_options',
-        'title'         => esc_html__( 'Form Options', 'bcb_leadgen' ),
+        'title'         => esc_html__( 'Form Options', 'bcb-leadgen' ),
         'object_types'  => array( 'leadpage' ),
     ) );
 
     $form->add_field( array(
-        'name'    => esc_html__( 'File Download', 'bcb_leadgen' ),
-        'desc'    => esc_html__( 'Upload a file which will download upon form completion', 'bcb_leadgen' ),
+        'name'    => esc_html__( 'File Download', 'bcb-leadgen' ),
+        'desc'    => esc_html__( 'Upload a file which will download upon form completion', 'bcb-leadgen' ),
         'id'      => $prefix . 'form_file',
         'type'    => 'file',
         'options' => array(
@@ -388,8 +378,8 @@ function bcb_leadgen_metaboxes() {
     ) );
 
     $form->add_field( array(
-        'name'       => esc_html__( 'Form Terms', 'bcb_leadgen' ),
-        'desc'       => esc_html__( 'Copy to display at the end of the lead form', 'bcb_leadgen' ),
+        'name'       => esc_html__( 'Form Terms', 'bcb-leadgen' ),
+        'desc'       => esc_html__( 'Copy to display at the end of the lead form', 'bcb-leadgen' ),
         'id'         => $prefix . 'form_terms',
         'type'       => 'wysiwyg',
         'options'    => array(
@@ -400,7 +390,7 @@ function bcb_leadgen_metaboxes() {
     
     $leadform = new_cmb2_box( array(
         'id'            => $prefix . 'leadform',
-        'title'         => esc_html__( 'Lead Entries', 'bcb_leadgen' ),
+        'title'         => esc_html__( 'Lead Entries', 'bcb-leadgen' ),
         'object_types'  => array( 'leadpage' ),
         'save_fields'   => false,
         'context'       => 'side',
@@ -414,15 +404,122 @@ function bcb_leadgen_metaboxes() {
     
     $email = new_cmb2_box( array(
         'id'            => $prefix . 'email_template',
-        'title'         => esc_html__( 'Email Template', 'bcb_leadgen' ),
+        'title'         => esc_html__( 'Email Template', 'bcb-leadgen' ),
         'object_types'  => array( 'leadpage' ),
     ) );
 
     $email->add_field( array(
-        'name'    => esc_html__( 'Email Source', 'bcb_leadgen' ),
+        'name'    => esc_html__( 'Email Source', 'bcb-leadgen' ),
         'id'      => $prefix . 'email_template',
         'type'    => 'hidden',
         'after_field' => '<br><textarea rows="8" style="width: 100%;">' . bcb_leadgen_email_template( $_post ) . '</textarea>',
     ) );
 }
 add_action( 'cmb2_admin_init', 'bcb_leadgen_metaboxes' );
+
+
+/**
+ * Editable table of campaign leads
+ *
+ * @param WP_Post $post
+ * @return void
+ */
+function bcb_leadgen_metaboxes_leads( $post ) {
+    add_meta_box(
+        'bcb_leadgen_leads_metabox',
+        __( 'Leads', 'bcb-leadgen' ),
+        function( $post ) {
+            if( class_exists( 'GFAPI' ) ) {
+                $form       = GFAPI::get_form( get_post_meta( $post->ID, 'leadpage_form_id', true ) );
+                $entries    = GFAPI::get_entries( $form['id'] );
+                $field_ids  = wp_list_pluck( $form['fields'], 'id' );
+                $fields     = array();
+
+                if( $form && $form['fields'] ) :
+                ?>
+
+                <table class="widefat" id="leads-form-<?php print $form['id']; ?>">
+                    <thead>
+                        <tr>
+                            <th style="display: none;"><?php esc_html_e( 'Entry ID', 'bcb-leadgen' ); ?></th>
+                            <?php foreach( $form['fields'] as $field ) : $fields[$field->id] = $field->label; ?>
+                                    
+                                <th><?php esc_html_e( $field->label, 'bcb-leadgen' ); ?></th>
+
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach( $entries as $entry ) : ?>
+                        <tr>
+                            <td><?php print esc_html( $entry['id'] ); ?></td>
+                            <?php
+                                $entry_fields = $entry;
+
+                                foreach( $fields as $key => $field ) {
+                                    printf( '<td>%s</td>', array_key_exists( $key, $entry_fields ) ? esc_html( $entry_fields[$key] ) : '&nbsp;' );   
+                                }
+                            ?>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <?php
+
+                    $columns_editable = array();
+                    
+                    $i = 1;
+                    foreach( $fields as $key => $field ) {
+                        $columns_editable[] = array(
+                            $i,
+                            $key
+                        );  
+
+                        $i++;
+                    }
+
+                ?>
+
+                <script>
+                    (function($) {
+                        $('#leads-form-<?php print $form['id']; ?>').Tabledit({
+                            url: '<?php print add_query_arg( array( 'editlead' => 'true' ), wp_nonce_url( admin_url( 'admin-ajax.php' ), 'edit_leadpage_lead' ) ); ?>',
+                            editButton: false,
+                            deleteButton: false,
+                            hideIdentifier: true,
+                            rowIdentifier: 'data-entry-id',
+                            columns: {
+                                identifier: [0, 'entry_id'],
+                                editable: <?php print esc_js( json_encode( $columns_editable ) ); ?>
+                            },
+                            buttons: {
+                                edit: {
+                                    action: 'bcb_leadgen_edit_lead'
+                                }
+                            },
+                            onAjax: function(action, serialize) {
+                                //console.log( serialize )
+                            },
+                            onComplete: function(response) {
+
+                            }
+                        });
+                    })(jQuery);
+                </script>
+
+                <p>&nbsp;</p>
+                <hr />
+                <p>&nbsp;</p>
+
+                <?php
+                endif;
+            }
+        },
+        'leadpage',
+        'normal',
+        'high'
+
+    );
+}
+add_action( 'add_meta_boxes_leadpage', 'bcb_leadgen_metaboxes_leads' );

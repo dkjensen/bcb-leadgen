@@ -1,5 +1,7 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+var gulp         = require('gulp');
+var sass         = require('gulp-sass');
+var concat       = require('gulp-concat'); // Concatenates JS files
+var uglify       = require('gulp-uglify'); // Minifies JS files
 
 gulp.task('sass', function () {
   return gulp
@@ -10,17 +12,21 @@ gulp.task('sass', function () {
         outputStyle: 'compressed'
     }))
     // Write the resulting CSS in the output folder
-    .pipe(gulp.dest('./assets/css'));
+    .pipe(gulp.dest('./dist'));
+});
+
+// JavaScript
+gulp.task('js', function() {
+  return gulp.src([
+      './node_modules/jquery-tabledit/jquery.tabledit.min.js',
+      './assets/js/bcb-leadgen-admin.js'
+    ])
+    .pipe(concat('bcb-leadgen-admin.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('watch', function() {
-    return gulp
-      // Watch the input folder for change,
-      // and run `sass` task when something happens
-      .watch('./assets/css/*.scss', ['sass'])
-      // When there is a change,
-      // log a message in the console
-      .on('change', function(event) {
-        console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-      });
-  });
+    gulp.watch('./assets/css/*.scss', ['sass']);
+    gulp.watch('./assets/js/*.js', ['js']);
+});
