@@ -351,7 +351,7 @@ function bcb_leadgen_metaboxes() {
     $leadpage->add_field( array(
         'name'       => esc_html__( 'Client Email', 'bcb-leadgen' ),
         'id'         => $prefix . 'client_email',
-        'type'       => 'text_email',
+        'type'       => 'text',
     ) );
 
     $form = new_cmb2_box( array(

@@ -4,13 +4,13 @@
  * Description: Lead generation pages, categorization and more
  * Author: David Jensen
  * Author URI: https://dkjensen.com
- * Version: 1.0.1
+ * Version: 1.0.2
  */
 
 if( ! defined( 'ABSPATH' ) )
     exit;
 
-define( 'BCB_LEADGEN_VER',   '1.0.1' );
+define( 'BCB_LEADGEN_VER',   '1.0.2' );
 define( 'BCB_LEADGEN_PATH',  plugin_dir_path( __FILE__ ) );
 define( 'BCB_LEADGEN_URL',   plugin_dir_url( __FILE__ ) );
 

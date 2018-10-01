@@ -78,6 +78,7 @@ function bcb_leadgen_schedule_report() {
 
     foreach( (array) $leadpages as $leadpage ) {
         $client_email   = get_post_meta( $leadpage->ID, 'leadpage_client_email', true );
+        $client_email   = array_map( 'trim', explode( ',', $client_email ) );
         $form_id        = get_post_meta( $leadpage->ID, 'leadpage_form_id', true );
         $form_entries   = (int) ( class_exists( 'GFAPI' ) && $form_id ) ? GFAPI::count_entries( $form_id ) : 0;
         
@@ -90,8 +91,10 @@ function bcb_leadgen_schedule_report() {
 
         $admin_body .= $body;
 
-        if( $client_email && is_email( $client_email ) ) {
-            wp_mail( $client_email, sprintf( __( 'Weekly Digest Lead Generation Report [%s]', 'bcb-leadgen' ), get_the_title( $leadpage->ID ) ), $body );
+        if( $client_email ) {
+            foreach( (array) $client_email as $email ) {
+                wp_mail( $email, sprintf( __( 'Weekly Digest Lead Generation Report [%s]', 'bcb-leadgen' ), get_the_title( $leadpage->ID ) ), $body );
+            }
         }
     }
 
