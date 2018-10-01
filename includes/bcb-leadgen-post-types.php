@@ -52,7 +52,7 @@ function bcb_leadgen_post_types() {
         'show_in_menu'       => false,
         'show_in_rest'       => true,
 		'query_var'          => true,
-		'capability_type'    => 'post',
+		'capability_type'    => 'leadpage',
 		'has_archive'        => true,
 		'hierarchical'       => false,
         'menu_position'      => null,

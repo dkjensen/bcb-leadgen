@@ -132,7 +132,7 @@ function bcb_leadgen_leads_manager_callback() {
                         ?>
 
                             <tr>
-                                <td><strong><a href="<?php print get_edit_post_link( $leadpage->ID ); ?>"><?php print get_the_title( $leadpage->ID ); ?></a></strong></td>
+                                <td><strong><a href="<?php print esc_url( admin_url( 'post.php?post=' . $leadpage->ID . '&action=edit' ) ); ?>"><?php print get_the_title( $leadpage->ID ); ?></a></strong></td>
                                 <td><?php print $form_entries; ?></td>
                                 <td><?php print get_the_date( get_option( 'date_format' ), $leadpage->ID ); ?></td>
                                 <td>-</td>
@@ -348,11 +348,13 @@ function bcb_leadgen_metaboxes() {
         'type'       => 'text',
     ) );
 
-    $leadpage->add_field( array(
-        'name'       => esc_html__( 'Client Email', 'bcb-leadgen' ),
-        'id'         => $prefix . 'client_email',
-        'type'       => 'text',
-    ) );
+    if( current_user_can( 'manage_options' ) ) {
+        $leadpage->add_field( array(
+            'name'       => esc_html__( 'Client Email', 'bcb-leadgen' ),
+            'id'         => $prefix . 'client_email',
+            'type'       => 'text',
+        ) );
+    }
 
     $form = new_cmb2_box( array(
         'id'            => $prefix . 'form_options',

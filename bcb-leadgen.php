@@ -44,6 +44,19 @@ register_activation_hook( __FILE__, function() {
     $admin->add_cap( 'read_private_leadpages' );
     $admin->add_cap( 'edit_leadpages' );
 
+    // Add our Lead Manager role
+    add_role( 'ad_lead_manager', __( 'Ad/Lead Manager', 'bcb-leadgen' ), array( 'read' => true ) );
+
+    $ad_lead_manager = get_role( 'ad_lead_manager' );
+    $ad_lead_manager->add_cap( 'edit_leadpage' );
+    $ad_lead_manager->add_cap( 'read_leadpage' );
+    $ad_lead_manager->add_cap( 'delete_leadpage' );
+    $ad_lead_manager->add_cap( 'edit_leadpages' );
+    $ad_lead_manager->add_cap( 'edit_others_leadpages' );
+    $ad_lead_manager->add_cap( 'publish_leadpages' );
+    $ad_lead_manager->add_cap( 'read_private_leadpages' );
+    $ad_lead_manager->add_cap( 'edit_leadpages' );
+
     flush_rewrite_rules();
 } );
 

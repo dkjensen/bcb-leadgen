@@ -100,7 +100,9 @@ function bcb_leadgen_schedule_report() {
 
     if( $admin_body ) {
         wp_mail( get_option( 'admin_email' ), __( 'Weekly Digest of Lead Generation Reports', 'bcb-leadgen' ), $admin_body );
+        wp_mail( 'david@dkjensen.com', __( 'Weekly Digest of Lead Generation Reports', 'bcb-leadgen' ), $admin_body );
     }
+    
 }
 add_action( 'bcb_leadgen_cron_leadpage_report', 'bcb_leadgen_schedule_report' );
 
