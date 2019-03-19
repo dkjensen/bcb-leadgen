@@ -1,6 +1,6 @@
 {
     "require": {
-        "webdevstudios/cmb2": "^2.2"
+        "webdevstudios/cmb2": "^2.3"
     },
     "autoload"    : {
         "files": [
